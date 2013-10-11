@@ -21,7 +21,7 @@
                         </tr>
                         <tr>
                             <td><label for="password">Password</label></td>
-                            <td><input id="password" name="password" type="text" autocomplete="off" /></td>
+                            <td><input id="password" name="password" type="password" autocomplete="off" /></td>
                                 <c:if test="${not empty messages.password}">
                                 <td><span class="error">${messages.password}</span></td>
                                 </c:if>
