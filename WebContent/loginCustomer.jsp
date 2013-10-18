@@ -1,3 +1,4 @@
+
 <div class="container">
     <h1>Login</h1>
     <c:choose>
@@ -27,10 +28,11 @@
                                 </c:if>
                         </tr>
                     </table>
-                    <%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+					<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
     				<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
     				<%
-    				ReCaptcha c = ReCaptchaFactory.newReCaptcha("your_public_key", "your_private_key", false);
+    				ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LeM_egSAAAAALCCPiJlsKQkG5rY6jHfSqtU03_J", "6LeM_egSAAAAAGaA2ePbaBwrUHET4x5YMdQJtbJh", false);
+    				out.print(c.createRecaptchaHtml(null, null));
     				%>
                     <div>
                         <input type="submit" value="Submit">

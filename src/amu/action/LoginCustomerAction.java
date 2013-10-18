@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+//Imports for Captcha
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+
 class LoginCustomerAction implements Action {
 
 	
@@ -28,7 +32,23 @@ class LoginCustomerAction implements Action {
 
             CustomerDAO customerDAO = new CustomerDAO();
             Customer customer = customerDAO.findByEmail(request.getParameter("email"));
+            String remoteAddr = request.getRemoteAddr();
+            
+            //Check if Captcha is entered correctly
+            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+            reCaptcha.setPrivateKey("your_private_key");
 
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
+            //Merge master into this branch before continuing. Lots of changes
+            //have been made.
+            if (reCaptchaResponse.isValid()) {
+            } 
+            
+            else {
+            }
             if (customer != null) {
                 values.put("email", request.getParameter("email"));
                 if (customer.getActivationToken() == null) {
