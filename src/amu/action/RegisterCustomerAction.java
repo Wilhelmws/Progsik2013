@@ -28,7 +28,11 @@ class RegisterCustomerAction extends HttpServlet implements Action {
         	if(security.InputControl.ValidateInput(tempEmail)){
         		messages.put("email", "Invalid Syntax Used.");
         		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
-        	}else{
+        	}else if(tempEmail.length() == 0){
+        		messages.put("email", "Email cannot be null.");
+        		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
+        	}
+        	else{
         		email = tempEmail;
         	}
         	
@@ -43,7 +47,11 @@ class RegisterCustomerAction extends HttpServlet implements Action {
             	if(security.InputControl.ValidateInput(tempName)){
             		messages.put("name", "Invalid Syntax Used.");
             		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
-            	}else{
+            	}else if(tempName.length() == 0){
+            		messages.put("name", "Name cannot be null.");
+            		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
+            	}
+            	else{
             		name = tempName;
             	}
                 customer.setName(name);
@@ -51,7 +59,11 @@ class RegisterCustomerAction extends HttpServlet implements Action {
                 if(security.InputControl.ValidateInput(tempPassword)){
             		messages.put("password", "Invalid Syntax Used.");
             		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");	
-                }else{
+                }else if(tempPassword.length() == 0 || tempPassword.length() < 6){
+            		messages.put("password", "Password must be at least 8 characters.");
+            		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
+            	}
+                else{
                 	password = tempPassword;
                 }
                 customer.setPassword(CustomerDAO.hashPassword(password));
