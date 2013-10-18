@@ -23,9 +23,10 @@ class ViewBookAction implements Action {
             
             ReviewDAO reviewDAO = new ReviewDAO();
             ArrayList<Review> reviews = reviewDAO.findByBookID(book.getId());
+            System.out.println("Size: " + reviews.size());
             
             if(reviews != null){
-            	request.setAttribute("reviews", reviews);
+            	request.setAttribute("rews", reviews);
             	
             }
         }

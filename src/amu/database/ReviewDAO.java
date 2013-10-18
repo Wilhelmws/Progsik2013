@@ -21,12 +21,7 @@ public class ReviewDAO {
 			connection = Database.getConnection();
 			statement = connection.createStatement();
 			
-			String query = "SELECT "
-					+ "review.id, "
-					+ "review.user, "
-					+ "review.message, "
-					+ "review.votes, "
-					+ "FROM review";
+			String query = "SELECT * FROM review";
 			
 //			String query = "SELECT "
 //					+ "review.id, "
@@ -40,7 +35,11 @@ public class ReviewDAO {
 
 			
 			while(resultSet.next()){
-				reviews.add(new Review(resultSet.getInt("review.id"), resultSet.getString("review.name"), resultSet.getString("review.message"), resultSet.getInt("review.votes")));
+				reviews.add(new Review(
+						resultSet.getInt("review.id"), 
+						resultSet.getString("review.name"), 
+						resultSet.getString("review.message"), 
+						resultSet.getInt("review.votes")));
 			}
 		}catch(SQLException exception){
 		}finally{

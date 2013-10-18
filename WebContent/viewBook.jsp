@@ -39,14 +39,13 @@
             	<c:choose>
             		<c:when test="${empty reviews}">
             		
-            			<b>Exists reviews</b>		
-            			
-		        		<c:forEach items="${reviews}" var="review">
-			        		<b>User: </b> ${review.name}
-			        		<b>Votes: </b> ${review.votes}
-			        		<b>Message: </b> ${review.message}
+		        		<c:forEach items="${rews}" var="rev">
+			        		<b>User: </b> ${rev.name} <br>
+			        		<b>Votes: </b> ${rev.votes} <br>
+			        		<b>Message: </b> ${rev.message} <br>
+			        		
+			        		<br><br>
 		        		</c:forEach>
-		        		
 		        	</c:when>
 		        	<c:otherwise>
 		        	
