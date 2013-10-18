@@ -1,27 +1,60 @@
 package amu.action;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import amu.Mailer;
 import amu.database.CustomerDAO;
 import amu.model.Customer;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class RegisterCustomerAction extends HttpServlet implements Action {
+    private String email;
+    private String name;
+    private String password;
     
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
         if (request.getMethod().equals("POST")) {
+        	Map<String, String> messages = new HashMap<String, String>();
+            request.setAttribute("messages", messages);
+            
+        	String tempEmail = request.getParameter("email");
+        	if(security.InputControl.ValidateInput(tempEmail)){
+        		messages.put("email", "Invalid Syntax Used.");
+        		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
+        	}else{
+        		email = tempEmail;
+        	}
+        	
             CustomerDAO customerDAO = new CustomerDAO();
-            Customer customer = customerDAO.findByEmail(request.getParameter("email"));
+            Customer customer = customerDAO.findByEmail(email);
 
             if (customer == null) {
                 customer = new Customer();
-                customer.setEmail(request.getParameter("email"));
-                customer.setName(request.getParameter("name"));
-                customer.setPassword(CustomerDAO.hashPassword(request.getParameter("password")));
+                customer.setEmail(email);
+                
+            	String tempName = request.getParameter("name");
+            	if(security.InputControl.ValidateInput(tempName)){
+            		messages.put("name", "Invalid Syntax Used.");
+            		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
+            	}else{
+            		name = tempName;
+            	}
+                customer.setName(name);
+                String tempPassword = request.getParameter("password");
+                if(security.InputControl.ValidateInput(tempPassword)){
+            		messages.put("password", "Invalid Syntax Used.");
+            		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");	
+                }else{
+                	password = tempPassword;
+                }
+                customer.setPassword(CustomerDAO.hashPassword(password));
                 customer.setActivationToken(CustomerDAO.generateActivationCode());
                 customer = customerDAO.register(customer);
                 
