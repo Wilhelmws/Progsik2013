@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class UpdateCartAction implements Action {
-
+	private String quant;
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
@@ -31,7 +31,13 @@ class UpdateCartAction implements Action {
                 if (item == null) {
                     BookDAO bookDAO = new BookDAO();
                     Book book = bookDAO.findByISBN(isbn[i]);
-                    cart.addItem(new CartItem(book, Integer.parseInt(request.getParameter("quantity"))));
+                    String tempQuant = request.getParameter("quantity");
+                    if(security.InputControl.ValidateInput(tempQuant)){
+                    	 return new ActionResponse(ActionResponseType.REDIRECT, "errorPage");
+                    }else{
+                    	quant = tempQuant;
+                    }
+                    cart.addItem(new CartItem(book, Integer.parseInt(quant)));
                 } else {
                     item.setQuantity(Integer.parseInt(quantity[i]));
                     cart.updateItem(item);

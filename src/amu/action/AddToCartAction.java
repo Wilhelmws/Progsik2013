@@ -1,19 +1,22 @@
 package amu.action;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import amu.database.BookDAO;
 import amu.model.Book;
 import amu.model.Cart;
 import amu.model.CartItem;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class AddToCartAction implements Action {
-
+	private String quantity;
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
-        
         Cart cart = (Cart) session.getAttribute("cart");
         
         if (cart == null)
@@ -21,7 +24,12 @@ class AddToCartAction implements Action {
             cart = new Cart();
             session.setAttribute("cart", cart);
         }
-        
+        String tempQuant = request.getParameter("quantity");
+        if(security.InputControl.ValidateInput(tempQuant)){
+        	 return new ActionResponse(ActionResponseType.REDIRECT, "errorPage");
+        }else{
+        	quantity = tempQuant;
+        }
         if (request.getParameter("isbn") != null && request.getParameter("quantity") != null)
         {
             BookDAO bookDAO = new BookDAO();
