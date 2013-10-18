@@ -27,6 +27,11 @@
                                 </c:if>
                         </tr>
                     </table>
+                    <%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+    				<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
+    				<%
+    				ReCaptcha c = ReCaptchaFactory.newReCaptcha("your_public_key", "your_private_key", false);
+    				%>
                     <div>
                         <input type="submit" value="Submit">
                     </div>
