@@ -1,7 +1,12 @@
 package amu.action;
 
+import java.util.ArrayList;
+
 import amu.database.BookDAO;
+import amu.database.ReviewDAO;
 import amu.model.Book;
+import amu.model.Review;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +20,17 @@ class ViewBookAction implements Action {
         
         if (book != null) {
             request.setAttribute("book", book);
+            
+            ReviewDAO reviewDAO = new ReviewDAO();
+            ArrayList<Review> reviews = reviewDAO.findByBookID(book.getId());
+            System.out.println("Size: " + reviews.size());
+            
+            if(reviews != null){
+            	request.setAttribute("rews", reviews);
+            	
+            }
         }
+        
         
         return new ActionResponse(ActionResponseType.FORWARD, "viewBook");
     }

@@ -32,6 +32,30 @@
                     <input type="submit" value="Add to cart" />
                 </form>
             </div>
+            
+            <!-- Review Books -->
+            <div>
+            	<ul>
+            	<c:choose>
+            		<c:when test="${empty reviews}">
+            		
+		        		<c:forEach items="${rews}" var="rev">
+			        		<b>User: </b> ${rev.name} <br>
+			        		<b>Votes: </b> ${rev.votes} <br>
+			        		<b>Message: </b> ${rev.message} <br>
+			        		
+			        		<br><br>
+		        		</c:forEach>
+		        	</c:when>
+		        	<c:otherwise>
+		        	
+		        		<b>No reviews found.</b>
+		        		
+		        	</c:otherwise>
+		        </c:choose>
+            	</ul>
+            </div>
+            
         </c:otherwise>
     </c:choose>
 </div>
