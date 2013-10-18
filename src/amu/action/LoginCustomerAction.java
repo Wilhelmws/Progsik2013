@@ -35,7 +35,8 @@ class LoginCustomerAction implements Action {
         	}
             CustomerDAO customerDAO = new CustomerDAO();
             Customer customer = customerDAO.findByEmail(request.getParameter("email"));
-
+            
+            values.put("email", request.getParameter("email"));
             if (customer != null) {
             	String tempPassword = request.getParameter("password");
             	if(security.InputControl.ValidateInput(tempPassword)){
@@ -48,19 +49,22 @@ class LoginCustomerAction implements Action {
                 if (customer.getActivationToken() == null) {
                 	Thread.sleep(2000);
                     if (customer.getPassword().equals(CustomerDAO.hashPassword(password))) {
+
                         HttpSession session = request.getSession(true);
                         session.setAttribute("customer", customer);
                         if (ActionFactory.hasKey(request.getParameter("from"))) {
                             return new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
                         }
                     } else { // Wrong password
-                        messages.put("password", "Password was incorrect.");
+                    	Thread.sleep(2000);
+                        messages.put("emailorpassword", "Password or email was incorrect.");
                     }
                 } else { // customer.getActivationToken() != null
                     return new ActionResponse(ActionResponseType.REDIRECT, "activateCustomer");
                 }
             } else { // findByEmail returned null -> no customer with that email exists
-                messages.put("email", "Email was incorrect.");
+            	Thread.sleep(2000);
+                messages.put("emailorpassword", "Password or email was incorrect.");
             }
 
             // Forward to login form with error messages
