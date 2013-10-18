@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class LoginCustomerAction implements Action {
-
+	private String password;
+	private String email;
 	
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -22,18 +23,31 @@ class LoginCustomerAction implements Action {
         }
 
         if (request.getMethod().equals("POST")) {
-
             Map<String, String> messages = new HashMap<String, String>();
             request.setAttribute("messages", messages);
 
+        	String tempEmail = request.getParameter("email");
+        	if(security.InputControl.ValidateInput(tempEmail)){
+        		messages.put("email", "Invalid Syntax used.");
+        		return new ActionResponse(ActionResponseType.FORWARD, "loginCustomer");
+        	}else{
+        		email = tempEmail;
+        	}
             CustomerDAO customerDAO = new CustomerDAO();
             Customer customer = customerDAO.findByEmail(request.getParameter("email"));
 
             if (customer != null) {
-                values.put("email", request.getParameter("email"));
+            	String tempPassword = request.getParameter("password");
+            	if(security.InputControl.ValidateInput(tempPassword)){
+            		messages.put("password", "Invalid Syntax used.");
+            		return new ActionResponse(ActionResponseType.FORWARD, "loginCustomer");
+            	}else{
+            		password = tempPassword;
+            	}
+                values.put("email", email);
                 if (customer.getActivationToken() == null) {
                 	Thread.sleep(2000);
-                    if (customer.getPassword().equals(CustomerDAO.hashPassword(request.getParameter("password")))) {
+                    if (customer.getPassword().equals(CustomerDAO.hashPassword(password))) {
                         HttpSession session = request.getSession(true);
                         session.setAttribute("customer", customer);
                         if (ActionFactory.hasKey(request.getParameter("from"))) {
