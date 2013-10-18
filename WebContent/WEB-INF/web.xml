@@ -26,10 +26,10 @@
   </servlet-mapping>
   <session-config>
     <session-timeout>15</session-timeout>
-	    <cookie-config>
-        <domain>paris.idi.ntnu.no</domain>
-        <path>/bookstoreBackup/</path>
-        <http-only>true</http-only>
+	<cookie-config>
+    	<domain>localhost</domain>
+    	<path>/bookstoreBackup/</path>
+    	<http-only>true</http-only>
     	<secure>true</secure>
     	<max-age>300</max-age>
     </cookie-config>
