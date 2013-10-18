@@ -27,7 +27,7 @@
                                 </tr>
                                 <tr>
                                     <td><label for="password">Password</label></td>
-                                    <td><input id="password" name="password" type="text" autocomplete="off" /></td>
+                                    <td><input id="password" name="password" type="password" autocomplete="off" /></td>
                                 </tr>
                             </table>
                             <div><input type="submit" value="Submit"></div>

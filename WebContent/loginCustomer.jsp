@@ -15,16 +15,13 @@
                             <td>
                                 <input id="email" name="email" type="text" value="${values.email}" />
                             </td>
-                            <c:if test="${not empty messages.email}">
-                                <td><span class="error">${messages.email}</span></td>
+                            <c:if test="${not empty messages.emailorpassword}">
+                                <td><span class="error">${messages.emailorpassword}</span></td>
                                 </c:if>
                         </tr>
                         <tr>
                             <td><label for="password">Password</label></td>
                             <td><input id="password" name="password" type="password" autocomplete="off" /></td>
-                                <c:if test="${not empty messages.password}">
-                                <td><span class="error">${messages.password}</span></td>
-                                </c:if>
                         </tr>
                     </table>
                     <div>
