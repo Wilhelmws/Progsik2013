@@ -13,8 +13,13 @@ public class InputControl {
 	 * @return True/False
 	 */
 	public static boolean ValidateInput(String s){
-		Pattern p = Pattern.compile("[-!$%^&*()_+|~=`{}\\[\\]:\";'<>?,.\\\\/]");
-		Matcher m = p.matcher(s);
-		return m.find();
+		if(s != null){
+			Pattern p = Pattern.compile("[-!$%^&*()_+|~=`{}\\[\\]:\";'<>?,.\\\\/]");
+			Matcher m = p.matcher(s);
+			return m.find();
+		}else{
+			return false;
+		}
+		
 	}
 }
