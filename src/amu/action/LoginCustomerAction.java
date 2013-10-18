@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 class LoginCustomerAction implements Action {
 
+	
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -30,8 +31,8 @@ class LoginCustomerAction implements Action {
 
             if (customer != null) {
                 values.put("email", request.getParameter("email"));
-
                 if (customer.getActivationToken() == null) {
+                	Thread.sleep(2000);
                     if (customer.getPassword().equals(CustomerDAO.hashPassword(request.getParameter("password")))) {
                         HttpSession session = request.getSession(true);
                         session.setAttribute("customer", customer);
