@@ -26,9 +26,16 @@ public class ReviewDAO {
 					+ "review.user, "
 					+ "review.message, "
 					+ "review.votes, "
-					+ "FROM review, review_x_book "
-					+ "WHERE review_x_book.book_id =" + bookID + " "
-					+ "AND review.id = review_x_book.review_id";
+					+ "FROM review";
+			
+//			String query = "SELECT "
+//					+ "review.id, "
+//					+ "review.user, "
+//					+ "review.message, "
+//					+ "review.votes, "
+//					+ "FROM review, review_x_book "
+//					+ "WHERE review_x_book.book_id =" + bookID + " "
+//					+ "AND review.id = review_x_book.review_id";
 			resultSet = statement.executeQuery(query);
 
 			

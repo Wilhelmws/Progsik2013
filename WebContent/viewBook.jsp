@@ -36,15 +36,27 @@
             <!-- Review Books -->
             <div>
             	<ul>
-	        		<c:forEach items="${reviews}" var="review">
-	        			
-	        		<b>User: </b> ${review.name}
-	        		<b>Votes: </b> ${review.votes}
-	        		<b>Message: </b> ${review.message}
-	        			
-	        		</c:forEach>
+            	<c:choose>
+            		<c:when test="${empty reviews}">
+            		
+            			<b>Exists reviews</b>		
+            			
+		        		<c:forEach items="${reviews}" var="review">
+			        		<b>User: </b> ${review.name}
+			        		<b>Votes: </b> ${review.votes}
+			        		<b>Message: </b> ${review.message}
+		        		</c:forEach>
+		        		
+		        	</c:when>
+		        	<c:otherwise>
+		        	
+		        		<b>No reviews found.</b>
+		        		
+		        	</c:otherwise>
+		        </c:choose>
             	</ul>
             </div>
+            
         </c:otherwise>
     </c:choose>
 </div>

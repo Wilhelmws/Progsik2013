@@ -2,8 +2,8 @@ package amu.model;
 
 public class Review {
 
-	int id, votes;
-	String name, message;
+	int id = 0 , votes = 0;
+	String name = "default", message = "default";
 	
 	public Review(int id, String name, String message, int votes){
 		this.id = id;
