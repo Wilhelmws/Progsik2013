@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class AddCreditCardAction implements Action {
-    
+    private CreditCard creditCard;
+	
+	
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
@@ -27,6 +29,7 @@ class AddCreditCardAction implements Action {
         }
         
         if (request.getMethod().equals("POST")) {
+        	creditCard = null;
             Map<String, String> messages = new HashMap<String, String>();
             request.setAttribute("messages", messages);
             
@@ -34,23 +37,30 @@ class AddCreditCardAction implements Action {
             expiryDate.set(Integer.parseInt(request.getParameter("expiryYear")), Integer.parseInt(request.getParameter("expiryMonth")), 1);
             
             CreditCardDAO creditCardDAO = new CreditCardDAO();
-            CreditCard creditCard = new CreditCard(
-                    customer, 
-                    request.getParameter("creditCardNumber"), 
-                    expiryDate,
-                    request.getParameter("cardholderName"));
-
-            Map<String, String> values = new HashMap<String, String>();
-            request.setAttribute("values", values);
-            values.put("creditCardNumber", request.getParameter("creditCardNumber"));
-            values.put("expiryDate", request.getParameter("expiry"));
-            values.put("cardholderName", request.getParameter("cardholderName"));
+            String tempccNumber = request.getParameter("creditCardNumber");
+            String tempchName = request.getParameter("cardholderName");
             
-            if (creditCardDAO.add(creditCard)) {
-                return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+            if(security.InputControl.ValidateInput(tempccNumber)){
+            	messages.put("error", "Invalid creditcard number.");
+            }else if(security.InputControl.ValidateInput(tempchName)){
+            	messages.put("error", "Invalid creditcard holder name.");
+            }else{
+            	creditCard = new CreditCard(customer, tempccNumber, expiryDate, tempchName);
             }
             
-            messages.put("error", "An error occured.");
+            if(creditCard != null){
+	            Map<String, String> values = new HashMap<String, String>();
+	            request.setAttribute("values", values);
+	            values.put("creditCardNumber", tempccNumber);
+	            values.put("expiryDate", request.getParameter("expiry"));
+	            values.put("cardholderName", request.getParameter("cardholderName"));
+	            
+	            if (creditCardDAO.add(creditCard)) {
+	                return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+	            }
+            }
+            
+            if(messages.size() == 0) messages.put("error", "An error occured.");
         }
         
         // (request.getMethod().equals("GET"))

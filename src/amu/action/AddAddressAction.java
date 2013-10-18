@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class AddAddressAction implements Action {
-
+	private Address address;
+	
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
@@ -33,22 +34,29 @@ class AddAddressAction implements Action {
 
         // Non-idempotent add address request
         if (request.getMethod().equals("POST")) {
+        	address = null;
             List<String> messages = new ArrayList<String>();
             request.setAttribute("messages", messages);
 
             AddressDAO addressDAO = new AddressDAO();
-            Address address = new Address(customer, request.getParameter("address"));
-
-            if (addressDAO.add(address)) {
-                if (ActionFactory.hasKey(request.getParameter("from"))) {
-                    return new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
-                } else {
-                    // Return to viewCustomer from addAddress by default
-                    return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
-                }
+            String tempAddress = request.getParameter("address");
+            
+            if(security.InputControl.ValidateInput(tempAddress)){
+            	messages.add("Invalid input.");
+            }else{
+            	address = new Address(customer, tempAddress);
+            }           
+            if(address != null){
+	            if (addressDAO.add(address)) {
+	                if (ActionFactory.hasKey(request.getParameter("from"))) {
+	                    return new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
+	                } else {
+	                    // Return to viewCustomer from addAddress by default
+	                    return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+	                }
+	            }
             }
-
-            messages.add("An error occured.");
+            if(messages.size() == 0) messages.add("An error occured.");
             request.setAttribute("address", address);
         }
 
