@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class ChangePasswordAction implements Action {
-
+	private String[] password;
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
@@ -22,38 +22,48 @@ class ChangePasswordAction implements Action {
         }
 
         if (request.getMethod().equals("POST")) {
+        	password = null;
             List<String> messages = new ArrayList<String>();
             request.setAttribute("messages", messages);
 
-            String[] password = request.getParameterValues("password");
-            if (!customer.getPassword().equals(CustomerDAO.hashPassword(password[0]))) {
-            	messages.add("Old password is wrong");
-            	System.out.println("customer pw: " + customer.getPassword());
-            	System.out.println("customer hashed pw: " + CustomerDAO.hashPassword(password[0]));
-            	System.out.println("custoemr pw from gui " + password[0]);
-            	System.out.println(customer.getPassword().equals(CustomerDAO.hashPassword(password[0])));
-            	return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
+            String[] tempPass = request.getParameterValues("password");
+            for (String s : tempPass) {
+            	if(security.InputControl.ValidateInput(s)){
+            		messages.add("Invalid Syntax Used.");
+            		return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
+            	}else{
+            		password = tempPass;
+            	}
+			}
+            if(password != null){
+	            if (!customer.getPassword().equals(CustomerDAO.hashPassword(password[0]))) {
+	            	messages.add("Old password is wrong");
+	            	System.out.println("customer pw: " + customer.getPassword());
+	            	System.out.println("customer hashed pw: " + CustomerDAO.hashPassword(password[0]));
+	            	System.out.println("custoemr pw from gui " + password[0]);
+	            	System.out.println(customer.getPassword().equals(CustomerDAO.hashPassword(password[0])));
+	            	return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
+	            }
+	
+	            // Validate that new email is typed in the same both times
+	            if (password[1].equals(password[2]) == false) {
+	                messages.add("Password and repeated password did not match. Please try again.");
+	                return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
+	            }
+	            
+	            if (password[1].equals(password[0])) {
+	            	messages.add("Old and new password can not be the same");
+	            	return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
+	            }
+	
+	            // Validation OK, do business logic
+	            CustomerDAO customerDAO = new CustomerDAO();
+	            customer.setPassword(CustomerDAO.hashPassword(password[1]));
+	            if (customerDAO.edit(customer) == false) {
+	                messages.add("An error occured.");
+	                return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
+	            }
             }
-
-            // Validate that new email is typed in the same both times
-            if (password[1].equals(password[2]) == false) {
-                messages.add("Password and repeated password did not match. Please try again.");
-                return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
-            }
-            
-            if (password[1].equals(password[0])) {
-            	messages.add("Old and new password can not be the same");
-            	return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
-            }
-
-            // Validation OK, do business logic
-            CustomerDAO customerDAO = new CustomerDAO();
-            customer.setPassword(CustomerDAO.hashPassword(password[1]));
-            if (customerDAO.edit(customer) == false) {
-                messages.add("An error occured.");
-                return new ActionResponse(ActionResponseType.FORWARD, "changePassword");
-            }
-            
             // Email change successful, return to viewCustomer
             return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
 

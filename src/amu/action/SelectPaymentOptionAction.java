@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class SelectPaymentOptionAction implements Action {
-
+	private String cardSecurityCode;
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -33,8 +33,18 @@ class SelectPaymentOptionAction implements Action {
         if (cart.getShippingAddress() == null) {
             return new ActionResponse(ActionResponseType.REDIRECT, "selectShippingAddress");
         }
-
+        
         CreditCardDAO creditCardDAO = new CreditCardDAO();
+
+        String tempcardSecurityCode = request.getParameter("cardSecurityCode");
+        if(tempcardSecurityCode != null){
+        	System.out.println("DO THE SECURITY CODE TESTING JOOOO");
+	        if(security.InputControl.ValidateInput(tempcardSecurityCode)){
+	        	return new ActionResponse(ActionResponseType.FORWARD, "errorPage");
+	        }else{
+	        	cardSecurityCode = tempcardSecurityCode;
+	        }
+        }
         
         // Handle credit card selection submission
         if (request.getMethod().equals("POST")) {

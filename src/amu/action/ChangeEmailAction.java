@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class ChangeEmailAction implements Action {
-
+	private String[] email;
+	
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
@@ -24,34 +25,40 @@ class ChangeEmailAction implements Action {
         }
 
         if (request.getMethod().equals("POST")) {
+        	email = null;
             Map<String, String[]> values = new HashMap<String, String[]>();
             request.setAttribute("values", values);
 
             List<String> messages = new ArrayList<String>();
             request.setAttribute("messages", messages);
-
-            String[] email = request.getParameterValues("email");
-            values.put("email", email);
-
-            // Validate that new email is typed in the same both times
-            if (email[0].equals(email[1]) == false) {
-                messages.add("New email and repeated email did not match. Please check for typing errors.");
-                return new ActionResponse(ActionResponseType.FORWARD, "changeEmail");
-            }
-
-            // Validation OK, do business logic
-            CustomerDAO customerDAO = new CustomerDAO();
-            customer.setEmail(email[0]);
-            if (customerDAO.edit(customer) == false) {
-                messages.add("DB update unsuccessful, likely there is already a user with this email address.");
-                return new ActionResponse(ActionResponseType.FORWARD, "changeEmail");
+            String[] tempEmail = request.getParameterValues("email");
+            for (String s : tempEmail) {
+				if(security.InputControl.ValidateInput(s)){
+					messages.add("Invalid syntax used in email");
+				}else
+				{
+					email = tempEmail;
+				}
             }
             
+            values.put("email", email);
+            if(email != null){
+	            // Validate that new email is typed in the same both times
+	            if (email[0].equals(email[1]) == false) {
+	            	messages.add("New email and repeated email did not match. Please check for typing errors.");
+	                return new ActionResponse(ActionResponseType.FORWARD, "changeEmail");
+	            }
+            	// Validation OK, do business logic
+	            CustomerDAO customerDAO = new CustomerDAO();
+	            customer.setEmail(email[0]);
+	            if (customerDAO.edit(customer) == false) {
+	                messages.add("DB update unsuccessful, likely there is already a user with this email address.");
+	                return new ActionResponse(ActionResponseType.FORWARD, "changeEmail");
+	            }
+            }
             // Email change successful, return to viewCustomer
             return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
-
         } 
-        
         // (request.getMethod().equals("GET")) 
         return new ActionResponse(ActionResponseType.FORWARD, "changeEmail");
     }

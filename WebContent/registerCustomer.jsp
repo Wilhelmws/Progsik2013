@@ -20,14 +20,21 @@
                                 <tr>
                                     <td><label for="email">Email</label></td>
                                     <td><input id="email" name="email" type="text" /></td>
+                                    <c:if test="${not empty messages.email}">
+                                		<td><span class="error">${messages.email}</span></td>
+                                </c:if>
                                 </tr>
                                 <tr>
                                     <td><label for="name">Name</label></td>
                                     <td><input id="name" name="name" type="text" /></td>
+                                    <c:if test="${not empty messages.name}">
+                                		<td><span class="error">${messages.name}</span></td>
+                                </c:if>
                                 </tr>
                                 <tr>
                                     <td><label for="password">Password</label></td>
-                                    <td><input id="password" name="password" type="text" autocomplete="off" /></td>
+                                    <td><input id="password" name="password" type="password" autocomplete="off" /></td>
+
                                 </tr>
                             </table>
                             <div><input type="submit" value="Submit"></div>

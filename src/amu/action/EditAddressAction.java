@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class EditAddressAction implements Action {
-
+	private String stringAddress;
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
@@ -26,16 +26,22 @@ class EditAddressAction implements Action {
         Address address = addressDAO.read(Integer.parseInt(request.getParameter("id")));
 
         if (request.getMethod().equals("POST")) {
+        	stringAddress = null;
             List<String> messages = new ArrayList<String>();
             request.setAttribute("messages", messages);
-
-            address.setAddress(request.getParameter("address"));
-            
-            if (addressDAO.edit(address)) {
-                return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+            String tempAddress = request.getParameter("address");
+            if(security.InputControl.ValidateInput(tempAddress)){
+            	messages.add("Invalid Syntax Used.");
+            }else{
+            	stringAddress = tempAddress;
+            	address.setAddress(stringAddress);
             }
-
-            messages.add("An error occured.");
+            if(stringAddress != null){
+	            if (addressDAO.edit(address)) {
+	                return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+	            }
+            }
+            if(messages.size() == 0) messages.add("An error occured.");
         }
 
         // (request.getMethod().equals("GET")) 

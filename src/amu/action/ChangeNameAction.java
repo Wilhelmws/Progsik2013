@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class ChangeNameAction implements Action {
-
+	private String name;
     @Override
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
@@ -22,18 +22,25 @@ class ChangeNameAction implements Action {
         }
 
         if (request.getMethod().equals("POST")) {
-
+        	name = null;
             Map<String, String> messages = new HashMap<String, String>();
             request.setAttribute("messages", messages);
-
-            customer.setName(request.getParameter("name"));
+            String tempName = request.getParameter("name");
+            if(security.InputControl.ValidateInput(tempName)){
+            	messages.put("name", "Invalid Syntax used.");
+            }else{
+            	name = tempName;
+            	customer.setName(name);
+            }
 
             CustomerDAO customerDAO = new CustomerDAO();
-            if (customerDAO.edit(customer)) { // Customer name was successfully changed
-                return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
-            } else {
-                messages.put("name", "Something went wrong here.");
-                return new ActionResponse(ActionResponseType.FORWARD, "changeName");
+            if(name != null){
+	            if (customerDAO.edit(customer)) { // Customer name was successfully changed
+	                return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+	            } else {
+	                messages.put("name", "Something went wrong here.");
+	                return new ActionResponse(ActionResponseType.FORWARD, "changeName");
+	            }
             }
         }
 
