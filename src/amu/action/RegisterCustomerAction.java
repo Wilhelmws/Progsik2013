@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+
+
 class RegisterCustomerAction extends HttpServlet implements Action {
     private String email;
     private String name;
@@ -57,15 +61,31 @@ class RegisterCustomerAction extends HttpServlet implements Action {
                 customer.setName(name);
                 String tempPassword = request.getParameter("password");
                 if(security.InputControl.ValidateInput(tempPassword)){
-            		messages.put("password", "Invalid Syntax Used.");
+            		messages.put("name", "Invalid Syntax Used.");
             		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");	
                 }else if(tempPassword.length() == 0 || tempPassword.length() < 6){
-            		messages.put("password", "Password must be at least 8 characters.");
+            		messages.put("name", "Password must be at least 8 characters.");
             		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
             	}
                 else{
                 	password = tempPassword;
                 }
+                
+                String remoteAddr = request.getRemoteAddr();
+                ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+                reCaptcha.setPrivateKey("6LeM_egSAAAAAGaA2ePbaBwrUHET4x5YMdQJtbJh");
+
+                String challenge = request.getParameter("recaptcha_challenge_field");
+                String uresponse = request.getParameter("recaptcha_response_field");
+                ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
+                if (reCaptchaResponse.isValid()) {
+                  //Captcha was correct. No action taken.
+                } else {
+                	messages.put("name", "Captcha was incorrect. Are you a bot?");
+            		return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
+                }
+                
                 customer.setPassword(CustomerDAO.hashPassword(password));
                 customer.setActivationToken(CustomerDAO.generateActivationCode());
                 customer = customerDAO.register(customer);
