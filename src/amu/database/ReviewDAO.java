@@ -10,7 +10,7 @@ import amu.model.Review;
 
 public class ReviewDAO {
 
-	public ArrayList<Review> findByBookID(int bookID) {
+	public ArrayList<Review> findByReviewID(int bookID) {
 		ArrayList<Review> reviews = new ArrayList<Review>();
 		
 		Connection connection = null;
@@ -21,16 +21,17 @@ public class ReviewDAO {
 			connection = Database.getConnection();
 			statement = connection.createStatement();
 			
-			String query = "SELECT * FROM review";
+			String query = "SELECT * FROM review ";
 			
 //			String query = "SELECT "
 //					+ "review.id, "
 //					+ "review.user, "
 //					+ "review.message, "
 //					+ "review.votes, "
-//					+ "FROM review, review_x_book "
-//					+ "WHERE review_x_book.book_id =" + bookID + " "
-//					+ "AND review.id = review_x_book.review_id";
+//					+ "FROM review, review_x_book, book "
+//					+ "WHERE review_x_book.review_id = review.id "
+//					+ "AND review_x_book.book_id = '" + bookID + "';";
+			
 			resultSet = statement.executeQuery(query);
 
 			

@@ -38,12 +38,19 @@
             	<ul>
             	<c:choose>
             		<c:when test="${empty reviews}">
+            			
+            			<div>
+    	        			<form action="addReview.do" method="post">
+    	        				Message:<br>
+        	    				<input type="text" name="message" value=""/>
+        	    				<input type="submit" value="Post review"/>
+	            			</form>
+            			</div>
             		
 		        		<c:forEach items="${rews}" var="rev">
 			        		<b>User: </b> ${rev.name} <br>
 			        		<b>Votes: </b> ${rev.votes} <br>
 			        		<b>Message: </b> ${rev.message} <br>
-			        		
 			        		<br><br>
 		        		</c:forEach>
 		        	</c:when>
@@ -55,6 +62,7 @@
 		        </c:choose>
             	</ul>
             </div>
+            
             
         </c:otherwise>
     </c:choose>

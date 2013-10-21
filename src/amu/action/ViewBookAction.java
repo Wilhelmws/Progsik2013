@@ -21,14 +21,13 @@ class ViewBookAction implements Action {
         if (book != null) {
             request.setAttribute("book", book);
             
-            ReviewDAO reviewDAO = new ReviewDAO();
-            ArrayList<Review> reviews = reviewDAO.findByBookID(book.getId());
-            System.out.println("Size: " + reviews.size());
-            
-            if(reviews != null){
-            	request.setAttribute("rews", reviews);
-            	
-            }
+    		ReviewDAO reviewDAO = new ReviewDAO();
+			ArrayList<Review> reviews = reviewDAO.findByReviewID(book.getId());
+			System.out.println("Number of reviews: " + reviews.size());
+			
+			if(reviews != null){
+				request.setAttribute("rews", reviews);
+			}
         }
         
         

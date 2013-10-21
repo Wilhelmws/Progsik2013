@@ -14,6 +14,9 @@ public class ActionFactory implements ServletContextListener {
     private static Map<String, Action> fillActionMap() {
         Map<String, Action> map = new HashMap<String, Action>();
 
+        // Reviews
+        map.put("addReview", new AddReviewAction());
+        
         // Address actions
         map.put("addAddress", new AddAddressAction());
         map.put("editAddress", new EditAddressAction());
