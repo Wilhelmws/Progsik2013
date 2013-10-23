@@ -98,7 +98,8 @@ public class ReviewDAO {
 					"review.votes " +
 					"FROM review " +
 					"JOIN review_x_book ON review.id = review_x_book.review_id " +
-					"WHERE review_x_book.book_id = '" + bookID + "';";
+					"WHERE review_x_book.book_id = '" + bookID + "'" +
+							"ORDER BY review.votes DESC;";
 			
 			resultSet = statement.executeQuery(query);
 
