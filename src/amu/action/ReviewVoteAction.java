@@ -11,24 +11,17 @@ public class ReviewVoteAction implements Action{
 	@Override
 	public ActionResponse execute(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
-		if(request.getParameter("action") != null){
-			System.out.println("clicked on vote");
+		if(request.getParameter("review") != null){
 
-			String action = request.getParameter("action");
-			
-			
 			int reviewID = Integer.parseInt(request.getParameter("review"));
 			ReviewDAO reviewDAO = new ReviewDAO();
 			Review review = reviewDAO.findByReviewID(reviewID);
 			
-			
 			if(review != null){
-				if(action.equals("+")){
-					System.out.println("UPVOTED");
+				if(request.getParameter("up") != null){
 					review.setVotes(review.getVotes() + 1);
 				}
-				else if(action.equals("-")){
-					System.out.println("DOWNVOTED");
+				else if(request.getParameter("down") != null){
 					review.setVotes(review.getVotes() - 1);
 				}
 				
@@ -36,10 +29,10 @@ public class ReviewVoteAction implements Action{
 			}
 		}
 		else{
-			System.out.println("action was null in ReviewVoteAction");
+			System.out.println("ReviewVoteAction: review was: " + request.getParameter("action"));
 		}
 		
-		return new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
+		return new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
 	}
 
 }

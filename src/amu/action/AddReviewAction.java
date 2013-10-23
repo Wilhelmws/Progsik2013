@@ -23,17 +23,12 @@ public class AddReviewAction implements Action {
         //If the user is not logged in, redirect to the login page
         if (customer == null) {
             ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "loginCustomer");
-            
-            //The page should be directed back here
-//            actionResponse.addParameter("from", "addReview");
-            actionResponse.addParameter("from", "viewBook");	//TODO: this should redirect back to the book
+            actionResponse.addParameter("from", "viewBook");
             actionResponse.addParameter("isbn", request.getParameter("bookid"));
             return actionResponse;
         }
         
         else if (request.getMethod().equals("POST")) {
-        	
-//            String user = request.getParameter("user");
         	String user = customer.getName();
             String content = request.getParameter("content");
             int bookid = Integer.parseInt(request.getParameter("bookid"));

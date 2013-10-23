@@ -53,10 +53,14 @@
             	<c:choose>
             		<c:when test="${empty reviews}">
             			
+            			
+            			<!-- TODO: Review only if user is logged in -->
             			<div>
     	        			<form action="addReview.do" method="post">
+    	        				<!-- 
     	        				Username:<br>
     	        				<input type="text" name="user" value=""/><br>
+    	        				-->
     	        				Message:<br>
     	        				<textarea name="content" rows="10" cols="40"></textarea><br>
         	    				<input type="hidden" name="bookid" value="${book.id}"/><br>
