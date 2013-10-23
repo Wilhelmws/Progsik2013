@@ -1,3 +1,17 @@
+<style type="text/css">
+    #main
+    {
+    position:relative;
+        width:200px;
+    }
+
+    .floatdiv
+    {
+    float:left;
+        width=80px
+    }
+</style>
+
 <div class="container">
     <h1>Book</h1>
     <c:choose>
@@ -41,9 +55,12 @@
             			
             			<div>
     	        			<form action="addReview.do" method="post">
+    	        				Username:<br>
+    	        				<input type="text" name="user" value=""/><br>
     	        				Message:<br>
-        	    				<input type="text" name="message" value=""/>
-        	    				<input type="submit" value="Post review"/>
+    	        				<textarea name="content" rows="10" cols="40"></textarea><br>
+        	    				<input type="hidden" name="bookid" value="${book.id}"/><br>
+        	    				<input type="submit" value="Post review"/><br>
 	            			</form>
             			</div>
             		
@@ -51,6 +68,13 @@
 			        		<b>User: </b> ${rev.name} <br>
 			        		<b>Votes: </b> ${rev.votes} <br>
 			        		<b>Message: </b> ${rev.message} <br>
+			        		
+			        		<form action = "vote.do" method="post">
+		            			<input type="button" name="down" value="-"/>
+		            			<input type="button" name="up" value="+"/>
+		            			<input type="hidden" name="review" value="${rev.id}"/>
+	            			</form>
+	            			
 			        		<br><br>
 		        		</c:forEach>
 		        	</c:when>

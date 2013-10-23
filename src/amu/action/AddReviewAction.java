@@ -4,9 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import amu.Mailer;
 import amu.database.CustomerDAO;
+import amu.database.ReviewDAO;
 import amu.model.Cart;
 import amu.model.Customer;
+import amu.model.Review;
 
 public class AddReviewAction implements Action {
 
@@ -26,7 +29,24 @@ public class AddReviewAction implements Action {
             return actionResponse;
         }
         
-        return new ActionResponse(ActionResponseType.FORWARD, "addReview");
+        else if (request.getMethod().equals("POST")) {
+        	
+            String user = request.getParameter("user");
+            String content = request.getParameter("content");
+            int bookid = Integer.parseInt(request.getParameter("bookid"));
+            
+            ReviewDAO reviewDAO = new ReviewDAO();
+            Review review = new Review(user, content, bookid);
+            
+            if(reviewDAO.add(review)){
+            	System.out.println("added: " + user + " Message: " + content + " book ID: " + bookid);
+            }
+          
+            //TODO: Create a new action response.
+//            return new ActionResponse(ActionResponseType.REDIRECT, "customerSupportSuccessful");
+        } 
+        
+        return new ActionResponse(ActionResponseType.FORWARD, "viewBook");
 	}
 
 }
