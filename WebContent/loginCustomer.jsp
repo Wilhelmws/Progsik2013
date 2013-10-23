@@ -7,6 +7,7 @@
                 <form action="loginCustomer.do" method="post">
                     <c:if test="${not empty values.from}">
                         <input type="hidden" name="from" value="${values.from}">
+                        <input type="hidden" name="isbn" value="${values.isbn}">
                     </c:if>
                     <table class="general-table">
                         <tr>

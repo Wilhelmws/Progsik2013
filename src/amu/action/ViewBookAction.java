@@ -16,6 +16,7 @@ class ViewBookAction implements Action {
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
         BookDAO bookDAO = new BookDAO();
+        System.out.println("ViewBookAction: ISBN: " + request.getParameter("isbn"));
         Book book = bookDAO.findByISBN(request.getParameter("isbn"));
         
         if (book != null) {
@@ -23,7 +24,6 @@ class ViewBookAction implements Action {
             
     		ReviewDAO reviewDAO = new ReviewDAO();
 			ArrayList<Review> reviews = reviewDAO.findByBookID(book.getId());
-			System.out.println("Number of reviews: " + reviews.size());
 			
 			if(reviews != null){
 				request.setAttribute("rews", reviews);

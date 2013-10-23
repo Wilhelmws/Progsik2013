@@ -24,6 +24,7 @@ class LoginCustomerAction implements Action {
 		request.setAttribute("values", values);
 		if (ActionFactory.hasKey(request.getParameter("from"))) {
 			values.put("from", request.getParameter("from"));
+			values.put("isbn", request.getParameter("isbn"));
 		}
 
 		if (request.getMethod().equals("POST")) {
@@ -71,7 +72,18 @@ class LoginCustomerAction implements Action {
 							session.setAttribute("customer", customer);
 
 							if (ActionFactory.hasKey(request.getParameter("from"))) {
-								return new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
+								ActionResponse ar = new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
+								
+								//If it was redirected from viewBook
+								if(request.getParameter("from").equals("addReview")){
+									System.out.println("LoginCustomerAction: " + request.getParameter("from"));
+									System.out.println("LoginCustomerAction: " + request.getParameter("isbn"));
+									ar.addParameter("isbn", request.getParameter("isbn"));
+									ar.addParameter("from", "loginCustomer");
+								}
+								
+								//execute the redirect
+								return ar;
 							}
 						} 
 						else {

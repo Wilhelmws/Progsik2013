@@ -23,7 +23,7 @@ public class AddReviewAction implements Action {
         //If the user is not logged in, redirect to the login page
         if (customer == null) {
             ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "loginCustomer");
-            actionResponse.addParameter("from", "viewBook");
+            actionResponse.addParameter("from", "addReview");
             actionResponse.addParameter("isbn", request.getParameter("bookid"));
             return actionResponse;
         }
@@ -42,7 +42,14 @@ public class AddReviewAction implements Action {
           
             //TODO: Create a new action response.
 //            return new ActionResponse(ActionResponseType.REDIRECT, "customerSupportSuccessful");
-        } 
+        }
+        else if(request.getParameter("from").equals("loginCustomer")){
+        	System.out.println("redirected from loginCustomer: " + request.getParameter("isbn"));
+        	ActionResponse ar = new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
+        	ar.addParameter("isbn", request.getParameter("isbn"));
+        	
+        	return ar;
+        }
         
         return new ActionResponse(ActionResponseType.FORWARD, "viewBook");
 	}

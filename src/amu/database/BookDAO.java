@@ -19,16 +19,29 @@ public class BookDAO {
             connection = Database.getConnection();
             statement = connection.createStatement();
             
-            String query = "SELECT * FROM book, publisher, title "
-                    + "WHERE book.isbn13 = '"
-                    + isbn + "' "
-                    + "AND book.title_id = title.id "
-                    + "AND book.publisher_id = publisher.id;";
+            String query;
+            
+            if(isbn.length() < 13){
+            	query = "SELECT * FROM book, publisher, title "
+            			+ "WHERE book.id = '"
+            			+ isbn + "' "
+            			+ "AND book.title_id = title.id "
+            			+ "AND book.publisher_id = publisher.id;";
+            }
+            else{
+            	query = "SELECT * FROM book, publisher, title "
+            			+ "WHERE book.isbn13 = '"
+            			+ isbn + "' "
+            			+ "AND book.title_id = title.id "
+            			+ "AND book.publisher_id = publisher.id;";
+            }
+            
+            
             resultSet = statement.executeQuery(query);
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "findByISBN SQL Query: " + query);
             
             if (resultSet.next()) {
-                AuthorDAO authorDAO = new AuthorDAO(); // TODO:
+                AuthorDAO authorDAO = new AuthorDAO();
                 
                 book = new Book();
                 book.setId(resultSet.getInt("book.id"));
@@ -52,4 +65,6 @@ public class BookDAO {
         
         return book;
     }
+    
+    
 }
