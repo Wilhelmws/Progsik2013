@@ -69,9 +69,9 @@
 			        		<b>Votes: </b> ${rev.votes} <br>
 			        		<b>Message: </b> ${rev.message} <br>
 			        		
-			        		<form action = "vote.do" method="post">
-		            			<input type="button" name="down" value="-"/>
-		            			<input type="button" name="up" value="+"/>
+			        		<form action="vote.do" method="post">
+		            			<input type="submit" name="down" value="-"/>
+		            			<input type="submit" name="up" value="+"/>
 		            			<input type="hidden" name="review" value="${rev.id}"/>
 	            			</form>
 	            			

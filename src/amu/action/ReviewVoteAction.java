@@ -12,6 +12,8 @@ public class ReviewVoteAction implements Action{
 	public ActionResponse execute(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
 		if(request.getParameter("action") != null){
+			System.out.println("clicked on vote");
+
 			String action = request.getParameter("action");
 			
 			
@@ -19,7 +21,6 @@ public class ReviewVoteAction implements Action{
 			ReviewDAO reviewDAO = new ReviewDAO();
 			Review review = reviewDAO.findByReviewID(reviewID);
 			
-			System.out.println("clicked on vote");
 			
 			if(review != null){
 				if(action.equals("+")){
@@ -38,8 +39,7 @@ public class ReviewVoteAction implements Action{
 			System.out.println("action was null in ReviewVoteAction");
 		}
 		
-		
-		return new ActionResponse(ActionResponseType.FORWARD, "vote");
+		return new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
 	}
 
 }
