@@ -12,11 +12,12 @@ public class Review {
 	 * @param message
 	 * @param votes
 	 */
-	public Review(int id, String name, String message, int votes){
+	public Review(int id, String name, String message, int votes, int bookid){
 		this.id = id;
 		this.name = name;
 		this.message = message;
 		this.votes = votes;
+		this.bookid = bookid;
 	}
 	
 	/**

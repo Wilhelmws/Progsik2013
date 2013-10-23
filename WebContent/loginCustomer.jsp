@@ -8,6 +8,7 @@
                     <c:if test="${not empty values.from}">
                         <input type="hidden" name="from" value="${values.from}">
                         <input type="hidden" name="isbn" value="${values.isbn}">
+                        <input type="hidden" name="content" value="${values.content}">
                     </c:if>
                     <table class="general-table">
                         <tr>

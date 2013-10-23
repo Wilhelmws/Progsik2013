@@ -16,11 +16,11 @@ class ViewBookAction implements Action {
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
         BookDAO bookDAO = new BookDAO();
-        System.out.println("ViewBookAction: ISBN: " + request.getParameter("isbn"));
         Book book = bookDAO.findByISBN(request.getParameter("isbn"));
         
         if (book != null) {
             request.setAttribute("book", book);
+            request.setAttribute("content", request.getParameter("content"));
             
     		ReviewDAO reviewDAO = new ReviewDAO();
 			ArrayList<Review> reviews = reviewDAO.findByBookID(book.getId());

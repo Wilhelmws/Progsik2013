@@ -26,11 +26,16 @@ public class ReviewVoteAction implements Action{
 				}
 				
 				reviewDAO.updateReview(review);
+				
+				ActionResponse ar = new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
+				ar.addParameter("isbn", String.valueOf(review.getBookid()));
+				return ar;
 			}
 		}
 		else{
 			System.out.println("ReviewVoteAction: review was: " + request.getParameter("action"));
 		}
+		
 		
 		return new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
 	}

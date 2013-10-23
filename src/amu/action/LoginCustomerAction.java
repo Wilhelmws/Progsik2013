@@ -25,6 +25,7 @@ class LoginCustomerAction implements Action {
 		if (ActionFactory.hasKey(request.getParameter("from"))) {
 			values.put("from", request.getParameter("from"));
 			values.put("isbn", request.getParameter("isbn"));
+			values.put("content", request.getParameter("content"));
 		}
 
 		if (request.getMethod().equals("POST")) {
@@ -78,8 +79,10 @@ class LoginCustomerAction implements Action {
 								if(request.getParameter("from").equals("addReview")){
 									System.out.println("LoginCustomerAction: " + request.getParameter("from"));
 									System.out.println("LoginCustomerAction: " + request.getParameter("isbn"));
+									System.out.println("LoginCustomerAction: " + request.getParameter("content"));
 									ar.addParameter("isbn", request.getParameter("isbn"));
 									ar.addParameter("from", "loginCustomer");
+									ar.addParameter("content", request.getParameter("content"));
 								}
 								
 								//execute the redirect

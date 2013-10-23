@@ -25,6 +25,7 @@ public class AddReviewAction implements Action {
             ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "loginCustomer");
             actionResponse.addParameter("from", "addReview");
             actionResponse.addParameter("isbn", request.getParameter("bookid"));
+            actionResponse.addParameter("content",  request.getParameter("content"));
             return actionResponse;
         }
         
@@ -44,14 +45,18 @@ public class AddReviewAction implements Action {
 //            return new ActionResponse(ActionResponseType.REDIRECT, "customerSupportSuccessful");
         }
         else if(request.getParameter("from").equals("loginCustomer")){
-        	System.out.println("redirected from loginCustomer: " + request.getParameter("isbn"));
         	ActionResponse ar = new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
         	ar.addParameter("isbn", request.getParameter("isbn"));
+        	ar.addParameter("content", request.getParameter("content"));
         	
         	return ar;
         }
         
-        return new ActionResponse(ActionResponseType.FORWARD, "viewBook");
+        ActionResponse ar = new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
+        ar.addParameter("isbn", request.getParameter("bookid"));
+        ar.addParameter("from", "addReview");
+        
+        return ar;
 	}
 
 }

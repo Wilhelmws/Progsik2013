@@ -27,7 +27,9 @@ public class ReviewDAO {
 			connection = Database.getConnection();
 			statement = connection.createStatement();
 			
-			String query = "SELECT * FROM review WHERE id = '" + reviewID + "';";
+			String query = "SELECT review.id, review.name, review.message, review.votes, review_x_book.book_id " +
+					"FROM review, review_x_book WHERE id = '" + reviewID + "'" +
+					"AND review.id = review_x_book.review_id;";
 			
 			resultSet = statement.executeQuery(query);
 			
@@ -36,7 +38,8 @@ public class ReviewDAO {
 						resultSet.getInt("review.id"),
 						resultSet.getString("review.name"),
 						resultSet.getString("review.message"),
-						resultSet.getInt("review.votes")
+						resultSet.getInt("review.votes"),
+						resultSet.getInt("review_x_book.book_id")
 						);
 			}
 		}catch(SQLException exception){
@@ -105,7 +108,8 @@ public class ReviewDAO {
 						resultSet.getInt("review.id"), 
 						resultSet.getString("review.name"), 
 						resultSet.getString("review.message"), 
-						resultSet.getInt("review.votes")));
+						resultSet.getInt("review.votes"),
+						bookID));
 			}
 		}catch(SQLException exception){
 		}finally{
