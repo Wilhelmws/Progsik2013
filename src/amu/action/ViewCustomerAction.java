@@ -23,9 +23,13 @@ class ViewCustomerAction implements Action {
         if (customer == null) {
             ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "loginCustomer");
             actionResponse.addParameter("from", "viewCustomer");
+            
+            System.out.println("ViewCustomer: customer was null");
             return actionResponse;
         } else {
-            CreditCardDAO creditCardDAO = new CreditCardDAO();
+        	System.out.println("ViewCustomer: " + customer.getName());
+
+        	CreditCardDAO creditCardDAO = new CreditCardDAO();
             List<CreditCard> creditCards = creditCardDAO.browse(customer);
             request.setAttribute("creditCards", creditCards);
             

@@ -85,6 +85,8 @@ class LoginCustomerAction implements Action {
 									ar.addParameter("content", request.getParameter("content"));
 								}
 								
+								System.out.println("LOGIN REDIRECT: " + request.getParameter("from"));
+								
 								//execute the redirect
 								return ar;
 							}

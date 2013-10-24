@@ -34,12 +34,12 @@ class PlaceOrderAction implements Action {
         OrderDAO orderDAO = new OrderDAO();
         Order order = new Order(customer, cart.getShippingAddress(), cart.getSubtotal().toString());
         
-        if (orderDAO.add(order))
-        {
+        if (orderDAO.add(order, cart)){
             cart = new Cart();
             session.setAttribute("cart", cart);
             return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderSuccessful");
-        } else {
+        } 
+        else {
             return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderError");
         }
     }

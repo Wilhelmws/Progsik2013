@@ -46,6 +46,10 @@
                 <div>Date: <fmt:formatDate value="${order.createdDate.time}" type="date" dateStyle="short" /></div>
                 <div>Value: ${order.value}</div>
                 <div>Status: ${order.statusText}</div>
+                <form action="editOrder.do" method="post">
+                	<input type="submit" value="Edit">
+                	<input type="hidden" name="orderID" value="${order.id}"/>
+                </form>
             </div>
         </c:forEach>
     </div>
