@@ -19,8 +19,15 @@
     <servlet-name>FrontController</servlet-name>
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>
-  <session-config>
-    <session-timeout>30</session-timeout>
+<session-config>
+    <session-timeout>15</session-timeout>
+	<cookie-config>
+    	<domain>paris.idi.ntnu.no</domain>
+    	<path>/bookstoreBackup/</path>
+    	<http-only>true</http-only>
+    	<secure>true</secure>
+    	<max-age>300</max-age>
+    </cookie-config>
   </session-config>
   <jsp-config>
     <jsp-property-group>
