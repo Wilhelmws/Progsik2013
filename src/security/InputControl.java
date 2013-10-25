@@ -14,7 +14,7 @@ public class InputControl {
 	 */
 	public static boolean ValidateInput(String s){
 		if(s != null){
-			Pattern p = Pattern.compile("[-!$%^&*()_+|~=`{}\\[\\]:\";'<>?,.\\\\/]");
+			Pattern p = Pattern.compile("[$%*`;'<>]");
 			Matcher m = p.matcher(s);
 			return m.find();
 		}else{
