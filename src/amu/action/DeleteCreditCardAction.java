@@ -35,11 +35,17 @@ class DeleteCreditCardAction implements Action {
 
             messages.add("An error occured.");
         }
-
+        List<CreditCard> customerCards = creditCardDAO.browse(customer);
         // (request.getMethod().equals("GET")) 
-        creditCard = creditCardDAO.read(Integer.parseInt(request.getParameter("id")));
-        request.setAttribute("creditCard", creditCard);
-        return new ActionResponse(ActionResponseType.FORWARD, "deleteCreditCard");
+        for (int i = 0; i < customerCards.size(); i++) {
+        	if (customerCards.get(i).getId() == Integer.parseInt(request.getParameter("id"))) {
+        		creditCard = creditCardDAO.read(Integer.parseInt(request.getParameter("id")));
+        		request.setAttribute("creditCard", creditCard);
+        		return new ActionResponse(ActionResponseType.FORWARD, "deleteCreditCard");        		
+        	}
+        }
+        return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+
     }
     
 }

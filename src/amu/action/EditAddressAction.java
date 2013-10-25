@@ -43,10 +43,15 @@ class EditAddressAction implements Action {
             }
             if(messages.size() == 0) messages.add("An error occured.");
         }
-
-        // (request.getMethod().equals("GET")) 
-        request.setAttribute("address", address);
-        return new ActionResponse(ActionResponseType.FORWARD, "editAddress");
+        List<Address> customerAddresses = addressDAO.browse(customer);
+        for (int i = 0; i < customerAddresses.size(); i++) {
+        	if (customerAddresses.get(i).getId() == Integer.parseInt(request.getParameter("id"))){
+            	// (request.getMethod().equals("GET")) 
+                request.setAttribute("address", address);
+                return new ActionResponse(ActionResponseType.FORWARD, "editAddress");
+        	}
+        }
+        return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
     }
 
 }
