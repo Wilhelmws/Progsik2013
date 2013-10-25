@@ -36,17 +36,18 @@ public class CustomerDAO {
         Customer customer = null;
 
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
             connection = Database.getConnection();
-            statement = connection.createStatement();
 
             String query = "SELECT * FROM customer WHERE email='"
                     + email
                     + "'";
-            resultSet = statement.executeQuery(query);
+            
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "findByEmail SQL Query: " + query);
 
 

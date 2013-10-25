@@ -12,12 +12,11 @@ public class BookDAO {
 		Book book = null;
 
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		try {
 			connection = Database.getConnection();
-			statement = connection.createStatement();
 
 			String query = "";
 			if(isbn != null){
@@ -38,8 +37,8 @@ public class BookDAO {
 				}
 			}
 
-
-			resultSet = statement.executeQuery(query);
+			statement = connection.prepareStatement(query);
+			resultSet = statement.executeQuery();
 			Logger.getLogger(this.getClass().getName()).log(Level.FINE, "findByISBN SQL Query: " + query);
 
 			if (resultSet.next()) {

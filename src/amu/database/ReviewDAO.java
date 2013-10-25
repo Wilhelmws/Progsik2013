@@ -19,19 +19,19 @@ public class ReviewDAO {
 	public Review findByReviewID(int reviewID){
 		
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		Review review = null;
 		
 		try{
 			connection = Database.getConnection();
-			statement = connection.createStatement();
 			
 			String query = "SELECT review.id, review.name, review.message, review.votes, review_x_book.book_id " +
 					"FROM review, review_x_book WHERE id = '" + reviewID + "'" +
 					"AND review.id = review_x_book.review_id;";
 			
-			resultSet = statement.executeQuery(query);
+			statement = connection.prepareStatement(query);			
+			resultSet = statement.executeQuery();
 			
 			while(resultSet.next()){
 				review = new Review(
@@ -78,13 +78,12 @@ public class ReviewDAO {
 	public ArrayList<Review> findByBookID(int bookID) {
 
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		ArrayList<Review> reviews = new ArrayList<Review>();
 		
 		try{
 			connection = Database.getConnection();
-			statement = connection.createStatement();
 			
 //			String query = "SELECT * FROM review ";
 	
@@ -101,7 +100,8 @@ public class ReviewDAO {
 					"WHERE review_x_book.book_id = '" + bookID + "'" +
 							"ORDER BY review.votes DESC;";
 			
-			resultSet = statement.executeQuery(query);
+			statement = connection.prepareStatement(query);
+			resultSet = statement.executeQuery();
 
 			
 			while(resultSet.next()){
