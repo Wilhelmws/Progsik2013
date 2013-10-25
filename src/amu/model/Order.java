@@ -82,4 +82,8 @@ public class Order {
                 return "Canceled";
         }
     }
+
+	public void setStatus(int i) {
+		this.status = i;
+	}
 }
