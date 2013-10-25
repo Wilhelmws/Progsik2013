@@ -54,12 +54,12 @@ public class OrderDAO {
 		return orders;
 	}
 	
-	/**
-	 * When an placed order is edited, this method should be used when placing the changes
-	 * @param order
-	 * @param cart
-	 * @return
-	 */
+//	/**
+//	 * When an placed order is edited, this method should be used when placing the changes
+//	 * @param order
+//	 * @param cart
+//	 * @return
+//	 */
 //	public boolean update(Order order, Cart cart){
 //		
 //		Map<String, CartItem> items = cart.getItems();
@@ -79,7 +79,7 @@ public class OrderDAO {
 	
 	public boolean add(Order order, Cart cart){
 		if(addOrder(order)){
-
+		System.out.println("Order id in change order: " + order.getId());
 			Map<String, CartItem> items = cart.getItems();
 			Iterator<Entry<String, CartItem>> it = items.entrySet().iterator();
 
@@ -94,8 +94,9 @@ public class OrderDAO {
 
 			return true;
 		}
-
+		
 		return false;
+
 	}
 
 	public boolean addItemsToOrder(Order order, CartItem cartItem){

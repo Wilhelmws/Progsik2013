@@ -30,6 +30,7 @@ public class EditOrderAction implements Action{
         cart = orderDAO.getOrderItems(order.getId(), customer.getId());
         session.setAttribute("cart", cart);
         session.setAttribute("editChart", "editChart");
+        System.out.println("EditOrderAction");
         
 		return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");
 	}
