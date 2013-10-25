@@ -31,7 +31,13 @@ public class AddReviewAction implements Action {
         
         else if (request.getMethod().equals("POST")) {
         	String user = customer.getName();
-            String content = request.getParameter("content");
+            String tempContent = request.getParameter("content");
+            String content = "";
+            if(security.InputControl.ValidateInput(tempContent)){
+            	return new ActionResponse(ActionResponseType.REDIRECT, "errorPage");
+            }else{
+            	content = tempContent;
+            }
             int bookid = Integer.parseInt(request.getParameter("bookid"));
             
             ReviewDAO reviewDAO = new ReviewDAO();

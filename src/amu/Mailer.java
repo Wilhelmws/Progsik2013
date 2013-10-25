@@ -25,14 +25,14 @@ public class Mailer {
 
         Properties properties = new Properties();
         // properties.put("mail.smtp.debug", "true");
-
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.auth", "true");
-
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
         properties.put("mail.smtp.host", Config.EMAIL_SMTP_HOST);
         properties.put("mail.smtp.port", Config.EMAIL_SMTP_PORT);
         properties.put("mail.smtp.user", Config.EMAIL_SMTP_USER);
-
+        properties.setProperty("mail.smtp.ssl.trust", "smtpserver");
         Session session = Session.getInstance(properties,
                 new javax.mail.Authenticator() {
             @Override
@@ -47,12 +47,9 @@ public class Mailer {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(subject);
             message.setContent(content, "text/html; charset=utf-8");
-
-            // The restriction to ntnu.no-recipients is here try to avoid spamming (too many) innocents.
-            // Do not remove it before you've secured all mail-sending code.
-            if (to.endsWith("ntnu.no")) {
-                Transport.send(message);
-            }
+           
+            Transport.send(message);
+            
         } catch (Exception exception) {
             Logger.getLogger(Mailer.class.getName()).log(Level.SEVERE, null, exception);
         } finally {
