@@ -85,10 +85,6 @@ public class ReviewDAO {
 		try{
 			connection = Database.getConnection();
 			
-//			String query = "SELECT * FROM review ";
-	
-			
-			//TODO: fix this query
 			String query = 
 					"SELECT " +
 					"review.id, " +

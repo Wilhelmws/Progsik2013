@@ -13,6 +13,15 @@ public class Order {
     
     // TODO: Add OrderItems
 
+    public Order(int id, Address address, Calendar createDate, String value, int status){
+    	this.id = id;
+    	this.address = address;
+    	this.createdDate = createdDate;
+    	this.value = value;
+    	this.status = status;
+    	
+    }
+    
     public Order(int id, Customer customer, Address address, Calendar createdDate, String value, int status) {
         this.id = id;
         this.customer = customer;
@@ -29,6 +38,10 @@ public class Order {
         this.createdDate = null;
         this.value = subtotal;
         this.status = 0;
+    }
+    
+    public void setId(int id){
+    	this.id = id;
     }
 
     public Integer getId() {
