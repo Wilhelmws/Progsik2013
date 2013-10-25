@@ -2,6 +2,7 @@ package amu.action;
 
 import amu.database.AddressDAO;
 import amu.database.CreditCardDAO;
+import amu.database.ListDAO;
 import amu.database.OrderDAO;
 import amu.model.Address;
 import amu.model.CreditCard;
@@ -40,6 +41,11 @@ class ViewCustomerAction implements Action {
             OrderDAO orderDAO = new OrderDAO();
             List<Order> orders = orderDAO.browse(customer);
             request.setAttribute("orders", orders);
+            
+            ListDAO listDAO = new ListDAO();
+            List<amu.model.List> lists = listDAO.browse(customer);
+            System.out.println("LIST GOTTEN " + lists.size());
+            request.setAttribute("lists", lists);
 
             return new ActionResponse(ActionResponseType.FORWARD, "viewCustomer");
         }

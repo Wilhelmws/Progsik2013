@@ -10,4 +10,6 @@
 
     <h2>Debugging:</h2>
     <div class = "index-item"><a href="debug/mail_log.jsp">View mail log</a></div>
+    
+    <h2>Published lists</h2>
 </div>
