@@ -145,29 +145,25 @@ public class OrderDAO {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		
-		String query = "SELECT " +
-				"order.id, " +
-				"order.customer_id, " +
-				"order_items.order_item_id, " +
-				"order_items.order_id, " +
-				"order_items.book_id, " +
-				"order_items.quantity " +
-				"FROM order JOIN order_items " +
-				"ON order.id = order_items.order_id " +
-				"WHERE order.id=? AND order.customer_id=?";
+		String query = 
+				"SELECT order_items.book_id, order_items.quantity " +
+				"FROM `order_items` " +
+				"JOIN `order` ON order.id = order_items.order_id " +
+				"WHERE order.customer_id = ? " +
+				"AND order.id = ?";
 
 		try{
 			connection = Database.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1,  orderID);
-			statement.setInt(2, customerID);
+			statement.setInt(1, customerID);
+			statement.setInt(2,  orderID);
 			resultSet = statement.executeQuery();
 
 			while(resultSet.next()){
 				CartItem ci = new CartItem(
 						new BookDAO().findByISBN(String.valueOf(
-								resultSet.getInt("order_items.book_id"))), 
-								resultSet.getInt("order_items.quantity"));
+								resultSet.getInt("book_id"))), 
+								resultSet.getInt("quantity"));
 				cart.addItem(ci);
 			}
 
