@@ -38,7 +38,6 @@ class SelectPaymentOptionAction implements Action {
 
         String tempcardSecurityCode = request.getParameter("cardSecurityCode");
         if(tempcardSecurityCode != null){
-        	System.out.println("DO THE SECURITY CODE TESTING JOOOO");
 	        if(security.InputControl.ValidateInput(tempcardSecurityCode)){
 	        	return new ActionResponse(ActionResponseType.FORWARD, "errorPage");
 	        }else{

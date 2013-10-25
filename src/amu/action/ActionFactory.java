@@ -44,6 +44,7 @@ public class ActionFactory implements ServletContextListener {
         map.put("placeOrder", new PlaceOrderAction());
         map.put("placeOrderError", new ForwardAction("placeOrderError"));
         map.put("placeOrderSuccessful", new ForwardAction("placeOrderSuccessful"));
+        map.put("placeOrderCancel", new ForwardAction("placeOrderCancel"));
         
         // Credit card actions
         map.put("addCreditCard", new AddCreditCardAction());
