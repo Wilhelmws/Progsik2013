@@ -68,7 +68,7 @@ class LoginCustomerAction implements Action {
 					if (customer.getPassword().equals(CustomerDAO.hashPassword(password))) {
 
 						//Check if Captcha is entered correctly
-//						if (reCaptchaResponse.isValid()) {
+						if (reCaptchaResponse.isValid()) {
 							HttpSession session = request.getSession(true);
 							session.setAttribute("customer", customer);
 
@@ -90,10 +90,10 @@ class LoginCustomerAction implements Action {
 								//execute the redirect
 								return ar;
 							}
-//						} 
-//						else {
-//							messages.put("emailorpassword", "Captcha was incorrect. Are you a bot?");
-//						}
+						} 
+						else {
+							messages.put("emailorpassword", "Captcha was incorrect. Are you a bot?");
+						}
 
 					}
 

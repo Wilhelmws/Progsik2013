@@ -53,6 +53,30 @@ public class OrderDAO {
 
 		return orders;
 	}
+	
+	/**
+	 * When an placed order is edited, this method should be used when placing the changes
+	 * @param order
+	 * @param cart
+	 * @return
+	 */
+//	public boolean update(Order order, Cart cart){
+//		
+//		Map<String, CartItem> items = cart.getItems();
+//		Iterator<Entry<String, CartItem>> it = items.entrySet().iterator();
+//
+//		while(it.hasNext()){
+//			Map.Entry<String, CartItem> pairs = (Entry<String, CartItem>) it.next();
+//			CartItem cartItem = pairs.getValue();
+//			cartItem.setQuantity(cartItem.getQuantity()*(-1));
+//			it.remove();
+//			if(!addItemsToOrder(order, cartItem)){
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
+	
 	public boolean add(Order order, Cart cart){
 		if(addOrder(order)){
 
@@ -91,7 +115,7 @@ public class OrderDAO {
 			statement.setInt(2, cartItem.getBook().getId());
 			statement.setInt(3, cartItem.getQuantity());
 			statement.setFloat(4, cartItem.getBook().getPrice());
-			statement.setInt(5, 0);
+			statement.setInt(5, order.getStatus());
 			statement.executeUpdate();
 
 			resultSet = statement.getGeneratedKeys();

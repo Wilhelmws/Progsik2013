@@ -35,6 +35,15 @@ class PlaceOrderAction implements Action {
         Order order = new Order(customer, cart.getShippingAddress(), cart.getSubtotal().toString());
         
         if (orderDAO.add(order, cart)){
+//            if(session.getAttribute("editChart").equals("editChart")){
+//            	if(orderDAO.update(order, cart)){
+//            		session.setAttribute("editChart", null);
+//            	}
+//            	else{
+//            		System.out.println("failed huehuehue");
+//            		return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderError");
+//            	}
+//            }
             cart = new Cart();
             session.setAttribute("cart", cart);
             return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderSuccessful");
