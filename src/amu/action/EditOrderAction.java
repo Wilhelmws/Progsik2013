@@ -27,9 +27,18 @@ public class EditOrderAction implements Action{
             session.setAttribute("cart", cart);
         }
         
+        if(request.getParameter("edit") != null){
+        	
+        	session.setAttribute("editChart", "editCart");
+        }
+        
+        if(request.getParameter("cancel") != null){
+        	session.setAttribute("editChart", "cancelCart");
+        	
+        }
+
         cart = orderDAO.getOrderItems(order.getId(), customer.getId());
         session.setAttribute("cart", cart);
-        session.setAttribute("editChart", "editChart");
         session.setAttribute("order", order);
         
 		return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");

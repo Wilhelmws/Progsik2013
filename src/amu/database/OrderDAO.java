@@ -185,9 +185,43 @@ public class OrderDAO {
 
 	}
 	
-	public boolean update(int oldOrderID, Order newOrder, Cart newCart, Customer customer){
+	public boolean cancel(int oldOrderID, Order newOrder, Cart newCart, Customer customer){
 		/** Update existing order to status -1 **/
 		Order oldOrder = getOrderByID(oldOrderID);
+		oldOrder.setStatus(-1);
+		
+		/** Add new order with negative value of the original order, and with status -1 **/
+		Cart oldCart = getOrderItems(oldOrder.getId(), customer.getId());
+		
+		//Add order_item with negative values from oldCart
+		Cart negatedOldCart = setNegativeValueOnCart(oldCart);
+		
+		updateOrder(oldOrder);
+		
+		/** INSERT ALL THE CANCELED (NEGATIVE) ORDER_ITEMS **/
+		Map<String, CartItem> items2 = negatedOldCart.getItems();
+		Iterator<Entry<String, CartItem>> it2 = items2.entrySet().iterator();
+		while(it2.hasNext()){
+			Map.Entry<String, CartItem> pairs2 = (Entry<String, CartItem>) it2.next();
+			CartItem cartItem2 = pairs2.getValue();
+			it2.remove();
+			
+			if(!addItemsToOrder(oldOrder, cartItem2)){
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public boolean update(int oldOrderID, Order newOrder, Cart newCart, Customer customer){
+		
+		/** Update existing order to status -1 **/
+		Order oldOrder = getOrderByID(oldOrderID);
+
+		if(oldOrder != null){
+			
+		
 		oldOrder.setStatus(-1);
 		updateOrder(oldOrder);
 		
@@ -229,6 +263,7 @@ public class OrderDAO {
 			return true;
 		}
 
+		}
 		return false;
 
 	}

@@ -47,7 +47,8 @@
                 <div>Value: ${order.value}</div>
                 <div>Status: ${order.statusText}</div>
                 <form action="editOrder.do" method="post">
-                	<input type="submit" value="Edit">
+                	<input type="submit" value="Edit" name="edit">
+                	<input type="submit" value="Cancel" name="cancel">
                 	<input type="hidden" name="orderID" value="${order.id}"/>
                 </form>
             </div>

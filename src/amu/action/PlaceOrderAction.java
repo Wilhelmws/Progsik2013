@@ -36,12 +36,22 @@ class PlaceOrderAction implements Action {
         Order order = new Order(customer, cart.getShippingAddress(), cart.getSubtotal().toString());
         
         if(session.getAttribute("editChart") != null){
-        	orderDAO.update(tempOrder.getId(), order, cart, customer);
-        	session.setAttribute("editChart", null);
-        	cart = new Cart();
-        	session.setAttribute("cart", cart);
+        	if(session.getAttribute("editChart").equals("editCart")){
+        		orderDAO.update(tempOrder.getId(), order, cart, customer);
+        		session.setAttribute("editChart", null);
+        		cart = new Cart();
+        		session.setAttribute("cart", cart);
+        		return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderSuccessful");
+        	}
         	
-        	return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderSuccessful");
+        	else if(session.getAttribute("editChart").equals("cancelCart")){
+        		orderDAO.cancel(tempOrder.getId(), order, cart, customer);
+        		session.setAttribute("editChart", null);
+        		cart = new Cart();
+        		session.setAttribute("cart", cart);
+        		
+        		return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderCancel");
+        	}
         }
 
         else if (orderDAO.add(order, cart)){
@@ -51,8 +61,7 @@ class PlaceOrderAction implements Action {
             return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderSuccessful");
         } 
         
-        else {
-            return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderError");
-        }
+        return new ActionResponse(ActionResponseType.REDIRECT, "placeOrderError");
+
     }
 }

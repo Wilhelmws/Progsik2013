@@ -21,6 +21,13 @@ class ViewCartAction implements Action {
             session.setAttribute("cart", cart);
         }
         
+        if(session.getAttribute("editChart") != null){
+        	if(session.getAttribute("editChart").equals("cancelCart")){
+        		return new ActionResponse(ActionResponseType.REDIRECT, "placeOrder");
+        		
+        	}
+        }
+        
         return new ActionResponse(ActionResponseType.FORWARD, "viewCart");
     }
     
