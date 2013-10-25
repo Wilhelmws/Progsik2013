@@ -35,10 +35,15 @@ class DeleteAddressAction implements Action {
 
             messages.add("An error occured."); 
         }
-
-        // (request.getMethod().equals("GET")) 
-        address = addressDAO.read(Integer.parseInt(request.getParameter("id"))); 
-        request.setAttribute("address", address);
-        return new ActionResponse(ActionResponseType.FORWARD, "deleteAddress");
+        List<Address> customerAddresses = addressDAO.browse(customer);
+        for (int i = 0; i < customerAddresses.size(); i++) {
+        	if (customerAddresses.get(i).getId() == Integer.parseInt(request.getParameter("id"))) {
+        		// (request.getMethod().equals("GET")) 
+        		address = addressDAO.read(Integer.parseInt(request.getParameter("id"))); 
+        		request.setAttribute("address", address);
+        		return new ActionResponse(ActionResponseType.FORWARD, "deleteAddress");        		
+        	}
+        }
+        return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
     }
 }
